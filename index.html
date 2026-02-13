@@ -1,0 +1,1437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TagSale.ai | Snap. Sell. Done.</title>
+    <meta name="description" content="Take a photo. AI finds the best marketplace, lists it, negotiates, ships it. You get paid. One click selling for everything you own.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --orange: #FF6B35;
+            --orange-light: #FF8B5E;
+            --orange-dark: #E85A25;
+            --green: #2EC4B6;
+            --green-dark: #25A99D;
+            --navy: #0B1730;
+            --dark: #111827;
+            --gray-900: #1F2937;
+            --gray-700: #374151;
+            --gray-500: #6B7280;
+            --gray-300: #D1D5DB;
+            --gray-100: #F3F4F6;
+            --white: #FFFFFF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--dark);
+            background: var(--white);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ========== NAV ========== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+            background: transparent;
+        }
+
+        nav.scrolled {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+            padding: 0.75rem 2rem;
+        }
+
+        nav.scrolled .nav-logo { color: var(--dark); }
+        nav.scrolled .nav-logo span { color: var(--orange); }
+        nav.scrolled .nav-link { color: var(--gray-700); }
+        nav.scrolled .nav-link:hover { color: var(--orange); }
+
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo span { color: var(--orange-light); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-link:hover { color: #fff; }
+
+        .nav-cta {
+            background: var(--orange);
+            color: #fff !important;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .nav-cta:hover { background: var(--orange-dark); transform: translateY(-1px); }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-toggle span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #fff;
+            margin: 5px 0;
+            transition: all 0.3s;
+        }
+
+        nav.scrolled .mobile-toggle span { background: var(--dark); }
+
+        /* ========== HERO ========== */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--navy) 0%, #162544 50%, #1a3055 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(ellipse, rgba(255,107,53,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 60%;
+            height: 100%;
+            background: radial-gradient(ellipse, rgba(46,196,182,0.06) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 8rem 2rem 4rem;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text { max-width: 560px; }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,107,53,0.12);
+            border: 1px solid rgba(255,107,53,0.25);
+            color: var(--orange-light);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--orange);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2.75rem, 5vw, 4.25rem);
+            color: #fff;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .hero h1 .highlight {
+            color: var(--orange);
+            position: relative;
+        }
+
+        .hero-sub {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            font-weight: 300;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .btn-hero {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--orange);
+            color: #fff;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-hero:hover { background: var(--orange-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(255,107,53,0.3); }
+
+        .btn-ghost {
+            color: rgba(255,255,255,0.7);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s;
+        }
+
+        .btn-ghost:hover { color: #fff; }
+
+        .hero-proof {
+            display: flex;
+            gap: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .proof-item .proof-number {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.75rem;
+            color: var(--orange);
+            line-height: 1;
+        }
+
+        .proof-item .proof-label {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.4);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-top: 0.25rem;
+        }
+
+        /* Phone Mockup */
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .phone-mockup {
+            width: 300px;
+            height: 600px;
+            background: var(--gray-900);
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.08);
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .phone-header {
+            background: var(--orange);
+            padding: 3rem 1.25rem 1.25rem;
+            text-align: center;
+        }
+
+        .phone-header-text {
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            letter-spacing: -0.3px;
+        }
+
+        .phone-header-sub {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.7rem;
+            margin-top: 0.25rem;
+        }
+
+        .phone-camera-btn {
+            width: 64px;
+            height: 64px;
+            background: #fff;
+            border-radius: 50%;
+            margin: 1rem auto 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .camera-icon {
+            width: 28px;
+            height: 28px;
+            color: var(--orange);
+        }
+
+        .phone-body { padding: 1rem 1.25rem; }
+
+        .phone-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: var(--gray-100);
+            border-radius: 12px;
+            margin-bottom: 0.6rem;
+            animation: slideIn 0.5s ease forwards;
+            opacity: 0;
+        }
+
+        .phone-item:nth-child(1) { animation-delay: 0.5s; }
+        .phone-item:nth-child(2) { animation-delay: 1s; }
+        .phone-item:nth-child(3) { animation-delay: 1.5s; }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .item-thumb {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .item-thumb.golf { background: #E8F5E9; }
+        .item-thumb.blender { background: #E3F2FD; }
+        .item-thumb.chair { background: #FFF3E0; }
+
+        .item-info { flex: 1; min-width: 0; }
+
+        .item-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--dark);
+            line-height: 1.2;
+        }
+
+        .item-marketplace {
+            font-size: 0.6rem;
+            color: var(--gray-500);
+        }
+
+        .item-price {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--green-dark);
+        }
+
+        .item-status {
+            font-size: 0.55rem;
+            color: var(--green-dark);
+            background: rgba(46,196,182,0.1);
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .phone-earnings {
+            background: linear-gradient(135deg, var(--green), var(--green-dark));
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            animation: slideIn 0.5s ease 2s forwards;
+            opacity: 0;
+        }
+
+        .earnings-label {
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .earnings-amount {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            color: #fff;
+            line-height: 1;
+            margin-top: 0.15rem;
+        }
+
+        /* Floating elements */
+        .float-badge {
+            position: absolute;
+            background: #fff;
+            border-radius: 12px;
+            padding: 0.6rem 1rem;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            animation: float 3s ease-in-out infinite;
+            z-index: 2;
+        }
+
+        .float-badge.ai-match {
+            top: 15%;
+            right: -20px;
+            color: var(--orange);
+            animation-delay: 0s;
+        }
+
+        .float-badge.shipped {
+            bottom: 25%;
+            left: -30px;
+            color: var(--green-dark);
+            animation-delay: 1.5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ========== HOW IT WORKS ========== */
+        .how-it-works {
+            padding: 7rem 2rem;
+            background: #fff;
+        }
+
+        .section-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--orange);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 3.5vw, 2.75rem);
+            color: var(--dark);
+            text-align: center;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--gray-500);
+            font-size: 1.05rem;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+            line-height: 1.7;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            position: relative;
+        }
+
+        .steps::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 12.5%;
+            right: 12.5%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--orange), var(--green));
+            opacity: 0.2;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            font-size: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step:nth-child(1) .step-icon { background: #FFF0EB; }
+        .step:nth-child(2) .step-icon { background: #EBF5FF; }
+        .step:nth-child(3) .step-icon { background: #F0FBF9; }
+        .step:nth-child(4) .step-icon { background: #F0F9EB; }
+
+        .step-number {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            background: var(--orange);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 0.65rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .step p {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            line-height: 1.6;
+        }
+
+        /* ========== THE MAGIC ========== */
+        .magic {
+            padding: 7rem 2rem;
+            background: var(--gray-100);
+        }
+
+        .magic-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .magic-content h2 {
+            font-family: 'DM Serif Display', serif;
+            font-size: clamp(2rem, 3.5vw, 2.75rem);
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            line-height: 1.15;
+        }
+
+        .magic-content h2 .highlight { color: var(--orange); }
+
+        .magic-content > p {
+            color: var(--gray-500);
+            font-size: 1.05rem;
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+        }
+
+        .magic-feature {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .magic-feature-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .magic-feature:nth-child(1) .magic-feature-icon { background: #FFF0EB; }
+        .magic-feature:nth-child(2) .magic-feature-icon { background: #EBF5FF; }
+        .magic-feature:nth-child(3) .magic-feature-icon { background: #F0FBF9; }
+
+        .magic-feature h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .magic-feature p {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            line-height: 1.5;
+        }
+
+        /* Comparison visual */
+        .comparison-card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+        }
+
+        .comparison-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-header h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.25rem;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .comparison-header p {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .comparison-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .comparison-row:last-child { border-bottom: none; }
+
+        .comparison-item-name {
+            font-size: 0.85rem;
+            color: var(--dark);
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .comparison-prices {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .price-fb {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+            text-decoration: line-through;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .price-tag {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--green-dark);
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .comparison-legend {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gray-100);
+        }
+
+        .legend-item {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .legend-fb { color: var(--gray-500); }
+        .legend-tag { color: var(--green-dark); }
+
+        /* ========== USE CASES ========== */
+        .use-cases {
+            padding: 7rem 2rem;
+            background: #fff;
+        }
+
+        .cases-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .case-card {
+            background: var(--gray-100);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .case-card:hover {
+            border-color: var(--orange);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+        }
+
+        .case-emoji {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .case-card h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .case-card p {
+            font-size: 0.85rem;
+            color: var(--gray-500);
+            line-height: 1.6;
+        }
+
+        .case-tag {
+            display: inline-block;
+            margin-top: 0.75rem;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        /* ========== FULL SERVICE ========== */
+        .full-service {
+            padding: 7rem 2rem;
+            background: var(--navy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .full-service::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 30% 50%, rgba(255,107,53,0.06) 0%, transparent 60%);
+        }
+
+        .service-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .full-service .section-label { color: var(--orange-light); }
+
+        .full-service .section-title { color: #fff; }
+
+        .full-service .section-subtitle { color: rgba(255,255,255,0.5); }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .service-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,107,53,0.3);
+        }
+
+        .service-card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-card p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.6;
+        }
+
+        /* ========== CTA / WAITLIST ========== */
+        .cta-section {
+            padding: 7rem 2rem;
+            background: #fff;
+            text-align: center;
+        }
+
+        .cta-inner {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-section .section-title {
+            margin-bottom: 1rem;
+        }
+
+        .cta-section .section-subtitle {
+            margin-bottom: 2.5rem;
+        }
+
+        .waitlist-form {
+            display: flex;
+            gap: 0.75rem;
+            max-width: 480px;
+            margin: 0 auto 1rem;
+        }
+
+        .waitlist-form input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--gray-300);
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .waitlist-form input:focus { border-color: var(--orange); }
+
+        .waitlist-form input::placeholder { color: var(--gray-500); }
+
+        .waitlist-form button {
+            background: var(--orange);
+            color: #fff;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .waitlist-form button:hover { background: var(--orange-dark); transform: translateY(-1px); }
+
+        .waitlist-note {
+            font-size: 0.8rem;
+            color: var(--gray-500);
+        }
+
+        .success-msg {
+            display: none;
+            padding: 1.5rem;
+            background: #F0FBF9;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .success-msg.show { display: block; }
+
+        .success-msg h3 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.25rem;
+            color: var(--green-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .success-msg p { color: var(--gray-500); font-size: 0.9rem; }
+
+        /* ========== FOOTER ========== */
+        footer {
+            padding: 3rem 2rem;
+            background: var(--navy);
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-brand {
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+        }
+
+        .footer-brand span { color: var(--orange); }
+
+        .footer-text {
+            color: rgba(255,255,255,0.35);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.4);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover { color: var(--orange); }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 900px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                padding: 7rem 1.5rem 3rem;
+            }
+            .hero-visual { display: none; }
+            .steps { grid-template-columns: repeat(2, 1fr); }
+            .steps::before { display: none; }
+            .magic-grid { grid-template-columns: 1fr; }
+            .cases-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 600px) {
+            .nav-links { display: none; }
+            .mobile-toggle { display: block; }
+            .nav-links.active {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--navy);
+                padding: 1.5rem 2rem;
+                gap: 1rem;
+            }
+            nav.scrolled .nav-links.active { background: #fff; }
+            nav.scrolled .nav-links.active .nav-link { color: var(--gray-700); }
+            .steps { grid-template-columns: 1fr; }
+            .hero-proof { flex-direction: column; gap: 1rem; }
+            .hero-actions { flex-direction: column; align-items: flex-start; }
+            .waitlist-form { flex-direction: column; }
+            .footer-inner { flex-direction: column; gap: 1rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Nav -->
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">Tag<span>Sale</span>.ai</a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#how" class="nav-link">How It Works</a></li>
+                <li><a href="#magic" class="nav-link">The Magic</a></li>
+                <li><a href="#services" class="nav-link">Services</a></li>
+                <li><a href="#waitlist" class="nav-cta">Join Waitlist</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">Coming Soon</div>
+                <h1>Snap a photo.<br>We sell it for<br><span class="highlight">top dollar.</span></h1>
+                <p class="hero-sub">Take a picture of anything you want to sell. Our AI identifies it, finds the best marketplace, lists it, negotiates the price, and ships it. You just approve and get paid.</p>
+                <div class="hero-actions">
+                    <a href="#waitlist" class="btn-hero">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                        Join the Waitlist
+                    </a>
+                    <a href="#how" class="btn-ghost">See how it works &#8594;</a>
+                </div>
+                <div class="hero-proof">
+                    <div class="proof-item">
+                        <div class="proof-number">3x-8x</div>
+                        <div class="proof-label">More Per Item</div>
+                    </div>
+                    <div class="proof-item">
+                        <div class="proof-number">60 sec</div>
+                        <div class="proof-label">To List</div>
+                    </div>
+                    <div class="proof-item">
+                        <div class="proof-number">Zero</div>
+                        <div class="proof-label">Hassle</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="phone-mockup">
+                    <div class="phone-screen">
+                        <div class="phone-header">
+                            <div class="phone-header-text">TagSale.ai</div>
+                            <div class="phone-header-sub">Tap to snap &amp; sell</div>
+                            <div class="phone-camera-btn">
+                                <svg class="camera-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                            </div>
+                        </div>
+                        <div class="phone-body">
+                            <div class="phone-item">
+                                <div class="item-thumb golf">&#9971;</div>
+                                <div class="item-info">
+                                    <div class="item-name">Fujikura Ventus Black 6S</div>
+                                    <div class="item-marketplace">Listed on GolfWRX</div>
+                                </div>
+                                <div style="text-align:right">
+                                    <div class="item-price">$145</div>
+                                    <div class="item-status">SOLD</div>
+                                </div>
+                            </div>
+                            <div class="phone-item">
+                                <div class="item-thumb blender">&#127867;</div>
+                                <div class="item-info">
+                                    <div class="item-name">Vitamix 5200</div>
+                                    <div class="item-marketplace">Listed on eBay</div>
+                                </div>
+                                <div style="text-align:right">
+                                    <div class="item-price">$89</div>
+                                    <div class="item-status">SOLD</div>
+                                </div>
+                            </div>
+                            <div class="phone-item">
+                                <div class="item-thumb chair">&#129681;</div>
+                                <div class="item-info">
+                                    <div class="item-name">Herman Miller Aeron</div>
+                                    <div class="item-marketplace">Listed on AptDeco</div>
+                                </div>
+                                <div style="text-align:right">
+                                    <div class="item-price">$420</div>
+                                    <div class="item-status">OFFER</div>
+                                </div>
+                            </div>
+                            <div class="phone-earnings">
+                                <div class="earnings-label">This Month's Earnings</div>
+                                <div class="earnings-amount">$654</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-badge ai-match">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    AI found best marketplace
+                </div>
+                <div class="float-badge shipped">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    Box shipped &amp; paid!
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="how-it-works" id="how">
+        <div class="section-inner">
+            <p class="section-label">How It Works</p>
+            <h2 class="section-title">Four steps. Sixty seconds. Done.</h2>
+            <p class="section-subtitle">No listing templates. No back-and-forth with buyers. No trips to the post office. Just money for your stuff.</p>
+
+            <div class="steps">
+                <div class="step">
+                    <div class="step-icon">
+                        &#128247;
+                        <span class="step-number">1</span>
+                    </div>
+                    <h3>Snap a Photo</h3>
+                    <p>Point your phone at anything you want to sell. Our AI instantly identifies the item, brand, model, and condition.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        &#129302;
+                        <span class="step-number">2</span>
+                    </div>
+                    <h3>AI Finds the Best Market</h3>
+                    <p>We scan specialty marketplaces, auction sites, and collector forums to find where your item gets the highest price.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        &#128077;
+                        <span class="step-number">3</span>
+                    </div>
+                    <h3>Accept the Offer</h3>
+                    <p>Review the AI's recommended price and marketplace. One tap to approve. We handle listing, photos, descriptions, and negotiations.</p>
+                </div>
+                <div class="step">
+                    <div class="step-icon">
+                        &#128230;
+                        <span class="step-number">4</span>
+                    </div>
+                    <h3>Box Arrives, You Ship</h3>
+                    <p>A pre-sized, pre-labeled box shows up at your door. Drop the item in, seal it, and leave it for pickup. Get paid when it arrives.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Magic (Specialty Marketplace) -->
+    <section class="magic" id="magic">
+        <div class="section-inner">
+            <div class="magic-grid">
+                <div class="magic-content">
+                    <p class="section-label" style="text-align:left;">The Secret</p>
+                    <h2>Your stuff is worth more than you think. You're just selling it in the <span class="highlight">wrong place.</span></h2>
+                    <p>A golf shaft on Facebook Marketplace? $15. That same shaft on GolfWRX? $145. Most people don't even know specialty marketplaces exist. Our AI does.</p>
+
+                    <div class="magic-feature">
+                        <div class="magic-feature-icon">&#127919;</div>
+                        <div>
+                            <h4>Smart Marketplace Routing</h4>
+                            <p>AI analyzes 200+ marketplaces to find where each specific item sells for the most.</p>
+                        </div>
+                    </div>
+                    <div class="magic-feature">
+                        <div class="magic-feature-icon">&#128176;</div>
+                        <div>
+                            <h4>AI-Powered Negotiation</h4>
+                            <p>Our agents handle buyer inquiries, counteroffers, and closing&mdash;24/7.</p>
+                        </div>
+                    </div>
+                    <div class="magic-feature">
+                        <div class="magic-feature-icon">&#128230;</div>
+                        <div>
+                            <h4>Done-For-You Shipping</h4>
+                            <p>Right-sized box, proper protection, pre-printed label. Delivered to your door.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comparison-card">
+                    <div class="comparison-header">
+                        <h3>Same items. Different marketplace.</h3>
+                        <p>Real price differences when you sell in the right place</p>
+                    </div>
+                    <div class="comparison-legend">
+                        <span class="legend-item legend-fb">FB Marketplace</span>
+                        <span class="legend-item legend-tag">TagSale.ai</span>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-item-name">&#9971; Fujikura Ventus 6S Shaft</span>
+                        <div class="comparison-prices">
+                            <span class="price-fb">$15</span>
+                            <span class="price-tag">$145</span>
+                        </div>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-item-name">&#127867; Vitamix 5200 Blender</span>
+                        <div class="comparison-prices">
+                            <span class="price-fb">$35</span>
+                            <span class="price-tag">$89</span>
+                        </div>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-item-name">&#129681; Herman Miller Aeron Chair</span>
+                        <div class="comparison-prices">
+                            <span class="price-fb">$200</span>
+                            <span class="price-tag">$420</span>
+                        </div>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-item-name">&#127928; Fender MIM Stratocaster</span>
+                        <div class="comparison-prices">
+                            <span class="price-fb">$300</span>
+                            <span class="price-tag">$575</span>
+                        </div>
+                    </div>
+                    <div class="comparison-row">
+                        <span class="comparison-item-name">&#128246; Garmin Fenix 7 Watch</span>
+                        <div class="comparison-prices">
+                            <span class="price-fb">$150</span>
+                            <span class="price-tag">$340</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section class="use-cases">
+        <div class="section-inner">
+            <p class="section-label">What People Sell</p>
+            <h2 class="section-title">If it's in your house, we can sell it.</h2>
+            <p class="section-subtitle">From the garage to the attic. If you'd put it at the curb, we'll turn it into cash.</p>
+
+            <div class="cases-grid">
+                <div class="case-card">
+                    <div class="case-emoji">&#9971;</div>
+                    <h3>Sports Equipment</h3>
+                    <p>Golf clubs, shafts, skis, bikes, weights. Specialty sports gear has massive niche markets.</p>
+                    <span class="case-tag">Avg 4x more on specialty sites</span>
+                </div>
+                <div class="case-card">
+                    <div class="case-emoji">&#128187;</div>
+                    <h3>Electronics &amp; Gadgets</h3>
+                    <p>Laptops, cameras, headphones, smart home. Tech has the most active resale markets.</p>
+                    <span class="case-tag">AI prices to the penny</span>
+                </div>
+                <div class="case-card">
+                    <div class="case-emoji">&#128186;</div>
+                    <h3>Furniture</h3>
+                    <p>Mid-century modern, office chairs, designer pieces. Local pickup or white-glove delivery.</p>
+                    <span class="case-tag">Pickup coordination included</span>
+                </div>
+                <div class="case-card">
+                    <div class="case-emoji">&#127928;</div>
+                    <h3>Musical Instruments</h3>
+                    <p>Guitars, amps, pedals, keyboards. Musician forums pay premium for quality gear.</p>
+                    <span class="case-tag">Reverb, TalkBass &amp; more</span>
+                </div>
+                <div class="case-card">
+                    <div class="case-emoji">&#128090;</div>
+                    <h3>Fashion &amp; Accessories</h3>
+                    <p>Designer bags, watches, sneakers, vintage. Authentication and specialty listing.</p>
+                    <span class="case-tag">TheRealReal, StockX, Grailed</span>
+                </div>
+                <div class="case-card">
+                    <div class="case-emoji">&#127968;</div>
+                    <h3>Whole House Cleanouts</h3>
+                    <p>Moving? Downsizing? Estate sale? Snap everything. We sort, price, and sell it all.</p>
+                    <span class="case-tag">Bulk mode available</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Full Service -->
+    <section class="full-service" id="services">
+        <div class="service-inner">
+            <p class="section-label">Beyond Selling</p>
+            <h2 class="section-title">A full-service AI concierge for your stuff.</h2>
+            <p class="section-subtitle">We don't just list your items. We handle the entire lifecycle&mdash;from your shelf to the buyer's door.</p>
+
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-card-icon">&#128247;</div>
+                    <h3>AI Item Recognition</h3>
+                    <p>Snap a photo and our AI identifies the exact brand, model, condition, and current market value across 200+ marketplaces.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon">&#128172;</div>
+                    <h3>AI Negotiation Agents</h3>
+                    <p>Our AI handles all buyer communication&mdash;questions, offers, counteroffers. You just approve the final deal.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon">&#128230;</div>
+                    <h3>Smart Shipping</h3>
+                    <p>Pre-sized boxes with the right packing materials show up at your door. Pre-printed labels. Schedule a pickup or drop at any carrier.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon">&#128666;</div>
+                    <h3>Large Item Logistics</h3>
+                    <p>Furniture? Heavy equipment? We coordinate pickup and delivery through our network of local movers and freight partners.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon">&#128477;&#65039;</div>
+                    <h3>Storage Coordination</h3>
+                    <p>Not ready to sell yet? We'll arrange storage at negotiated rates while we list your items at the right time for max value.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-card-icon">&#128178;</div>
+                    <h3>Instant Pricing</h3>
+                    <p>Get real-time market value for anything. See exactly what your item is worth on every platform before you decide to sell.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA / Waitlist -->
+    <section class="cta-section" id="waitlist">
+        <div class="cta-inner">
+            <p class="section-label">Early Access</p>
+            <h2 class="section-title">Stop giving your stuff away.</h2>
+            <p class="section-subtitle">Join the waitlist and be first to turn your garage into a goldmine. No listing. No haggling. No trips to the post office. Just money.</p>
+
+            <form class="waitlist-form" id="waitlistForm">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">Join Waitlist</button>
+            </form>
+            <p class="waitlist-note">Free to join. We'll notify you when we launch in your area.</p>
+
+            <div class="success-msg" id="waitlistSuccess">
+                <h3>You're on the list!</h3>
+                <p>We'll let you know as soon as TagSale.ai launches. Start taking photos of stuff you want to sell.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand">Tag<span>Sale</span>.ai</div>
+                <p class="footer-text">&copy; 2025 TagSale AI, Inc. All rights reserved.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#how">How It Works</a>
+                <a href="#magic">Pricing</a>
+                <a href="#waitlist">Join Waitlist</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Nav scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            nav.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Mobile menu
+        document.getElementById('mobileToggle').addEventListener('click', () => {
+            document.getElementById('navLinks').classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navLinks').classList.remove('active');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+
+        // Waitlist form
+        document.getElementById('waitlistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.querySelector('.waitlist-note').style.display = 'none';
+            document.getElementById('waitlistSuccess').classList.add('show');
+        });
+
+        // Intersection observer for animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.step, .case-card, .service-card, .magic-feature').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+
+</body>
+</html>
