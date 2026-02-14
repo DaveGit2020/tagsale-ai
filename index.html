@@ -1482,8 +1482,8 @@
                 <a href="#" onclick="openModal(); return false;">Price My Item</a>
             </div>
             <div class="footer-contact">
-                <a href="#" onclick="openModal(); return false;">Contact Us</a>
-                <a href="#" onclick="openModal(); return false;">Partner With Us</a>
+                <a href="#" onclick="openModal('contact'); return false;">Contact Us</a>
+                <a href="#" onclick="openModal('partner'); return false;">Partner With Us</a>
             </div>
         </div>
     </footer>
@@ -1516,7 +1516,54 @@
         });
 
         // Modal
-        function openModal() {
+        const modalModes = {
+            pricing: {
+                badge: 'Beta Access',
+                title: 'See what your stuff is worth.',
+                desc: 'TagSale.ai is in beta. Drop your email and tell us what you want to price &mdash; we\'ll send you a free AI valuation and let you know when full access goes live.',
+                placeholder: 'What do you want to price? (e.g., Titleist TSR3 driver, KitchenAid mixer, vintage Fender guitar...)',
+                button: 'Get My Free Estimate &rarr;',
+                subject: 'New TagSale.ai Beta Signup!',
+                successTitle: 'You\'re in!',
+                successMsg: 'We got your item. Our AI is crunching the numbers &mdash; you\'ll get a price estimate in your inbox soon. Keep snapping photos of stuff you want to sell!'
+            },
+            contact: {
+                badge: 'Get In Touch',
+                title: 'We\'d love to hear from you.',
+                desc: 'Have a question, idea, or just want to say hi? Drop your email and a message &mdash; we\'ll get back to you quickly.',
+                placeholder: 'What\'s on your mind?',
+                button: 'Send Message &rarr;',
+                subject: 'New TagSale.ai Contact Message',
+                successTitle: 'Message sent!',
+                successMsg: 'Thanks for reaching out. We\'ll get back to you soon.'
+            },
+            partner: {
+                badge: 'Partnerships',
+                title: 'Let\'s build something together.',
+                desc: 'Interested in partnering with TagSale.ai? Tell us who you are and what you have in mind &mdash; we\'re always looking for great collaborators.',
+                placeholder: 'Tell us about yourself and the partnership idea...',
+                button: 'Start the Conversation &rarr;',
+                subject: 'New TagSale.ai Partnership Inquiry',
+                successTitle: 'We\'re on it!',
+                successMsg: 'Thanks for your interest in partnering. We\'ll review and get back to you soon.'
+            }
+        };
+
+        function openModal(mode) {
+            mode = mode || 'pricing';
+            const m = modalModes[mode];
+            document.querySelector('#modalFormView .modal-badge').innerHTML = m.badge;
+            document.querySelector('#modalFormView h2').innerHTML = m.title;
+            document.querySelector('#modalFormView .modal-desc').innerHTML = m.desc;
+            document.querySelector('#betaForm textarea[name="item"]').placeholder = m.placeholder;
+            document.querySelector('#betaForm button[type="submit"]').innerHTML = m.button;
+            document.querySelector('#betaForm input[name="subject"]').value = m.subject;
+            document.querySelector('#modalSuccess h3').innerHTML = m.successTitle;
+            document.querySelector('#modalSuccess p').innerHTML = m.successMsg;
+            // Reset form state in case it was previously submitted
+            document.getElementById('modalFormView').style.display = '';
+            document.getElementById('modalSuccess').classList.remove('show');
+            document.getElementById('betaForm').reset();
             document.getElementById('betaModal').classList.add('active');
             document.body.style.overflow = 'hidden';
         }
