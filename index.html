@@ -1431,12 +1431,13 @@
                 <div class="modal-badge">Beta Access</div>
                 <h2>See what your stuff is worth.</h2>
                 <p class="modal-desc">TagSale.ai is in beta. Drop your email and tell us what you want to price &mdash; we'll send you a free AI valuation and let you know when full access goes live.</p>
-                <form class="modal-form" id="betaForm" action="https://formsubmit.co/tagsaleai@gmail.com" method="POST">
+                <form class="modal-form" id="betaForm" action="https://api.web3forms.com/submit" method="POST">
+                    <input type="hidden" name="access_key" value="e71b608c-ba69-4dc3-82d0-765910e81fc3">
+                    <input type="hidden" name="subject" value="New TagSale.ai Beta Signup!">
+                    <input type="hidden" name="from_name" value="TagSale.ai Website">
+                    <input type="checkbox" name="botcheck" style="display: none;">
                     <input type="email" name="email" placeholder="Your email" required>
                     <textarea name="item" placeholder="What do you want to price? (e.g., Titleist TSR3 driver, KitchenAid mixer, vintage Fender guitar...)"></textarea>
-                    <input type="hidden" name="_subject" value="New TagSale.ai Beta Signup!">
-                    <input type="hidden" name="_captcha" value="false">
-                    <input type="hidden" name="_template" value="table">
                     <button type="submit">Get My Free Estimate &rarr;</button>
                 </form>
                 <p class="modal-note">Free forever. We'll never spam you.</p>
@@ -1512,7 +1513,7 @@
             if (e.key === 'Escape') closeModal();
         });
 
-        // Beta form — sends to Formsubmit.co (emails tagsaleai@gmail.com) + local backup
+        // Beta form — sends to Web3Forms (emails tagsaleai@gmail.com) + local backup
         document.getElementById('betaForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const form = this;
@@ -1524,7 +1525,7 @@
             signups.push({ email, item, timestamp: new Date().toISOString() });
             localStorage.setItem('tagsale_signups', JSON.stringify(signups));
 
-            // 2. Send to Formsubmit.co → emails tagsaleai@gmail.com
+            // 2. Send to Web3Forms → emails tagsaleai@gmail.com
             const formData = new FormData(form);
             fetch(form.action, {
                 method: 'POST',
